@@ -84,6 +84,10 @@ impl Color {
         Self { r, g, b, a }
     }
 
+    pub fn from_rgb(r: f32, g: f32, b: f32) -> Self {
+        Self::new(r, g, b, 1.0)
+    }
+
     pub fn random() -> Self {
         Color::new(
             rand::random::<f32>(),

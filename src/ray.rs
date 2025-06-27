@@ -46,6 +46,34 @@ impl Default for Ray {
     }
 }
 
+pub struct Hit {
+    /// BLAS index hit in this intersection
+    pub blas: u32,
+
+    /// Primitive index hit in this intersection
+    /// If this index goes beyond the final triangle, try with spheres
+    pub primitive: u32,
+
+    pub depth: f32,
+    pub point: Point3,
+
+    /// Barycentric coordinates expressing the hit point in terms of the primitive.
+    /// Useful to interpolate vertex data of such a primitive
+    pub uv: Vec2,
+}
+
+impl Hit {
+    pub fn new(blas: u32, primitive: u32, depth: f32, point: Point3, uv: Vec2) -> Self {
+        Self {
+            blas,
+            primitive,
+            depth,
+            point,
+            uv,
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
