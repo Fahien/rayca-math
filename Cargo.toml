@@ -1,0 +1,13 @@
+[package]
+name = "rayca-math"
+version = "0.1.0"
+edition = "2024"
+authors = ["Antonio Caggiano <info@antoniocaggiano.eu>"]
+description = "A collection of mathematical types and functions for ray tracing in Rust."
+license = "MIT"
+readme = "README.md"
+
+[dependencies]
+num-traits = "0.2.19"
+rand = "0.9.1"
+serde = "1.0.219"
