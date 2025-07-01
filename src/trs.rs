@@ -114,6 +114,11 @@ impl Trs {
     pub fn get_translation(&self) -> Vec3 {
         self.rotation * self.translation
     }
+
+    /// Rotates by the given quaternion
+    pub fn rotate(&mut self, rotation: Quat) {
+        self.rotation = rotation * self.rotation;
+    }
 }
 
 impl From<Mat4> for Trs {
