@@ -119,6 +119,16 @@ impl Trs {
     pub fn rotate(&mut self, rotation: Quat) {
         self.rotation = rotation * self.rotation;
     }
+
+    /// Returns a Mat4 representation
+    pub fn to_mat4(&self) -> Mat4 {
+        Mat4::from(self)
+    }
+
+    /// Returns a Mat3 representation
+    pub fn to_mat3(&self) -> Mat3 {
+        Mat3::from(self)
+    }
 }
 
 impl From<Mat4> for Trs {
