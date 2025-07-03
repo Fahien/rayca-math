@@ -129,6 +129,13 @@ impl Trs {
     pub fn to_mat3(&self) -> Mat3 {
         Mat3::from(self)
     }
+
+    pub fn to_view_mat4(&self) -> Mat4 {
+        let mut matrix = self.to_mat4();
+        // Invert translation
+        matrix.set_translation(&-matrix.get_translation());
+        matrix
+    }
 }
 
 impl From<Mat4> for Trs {
