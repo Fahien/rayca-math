@@ -15,6 +15,7 @@ pub mod size2;
 pub mod trs;
 pub mod vec2;
 pub mod vec3;
+pub mod vec4;
 
 pub use color::*;
 pub use mat3::*;
@@ -27,5 +28,6 @@ pub use size2::*;
 pub use trs::*;
 pub use vec2::*;
 pub use vec3::*;
+pub use vec4::*;
 
 const EPS: f32 = f32::EPSILON * 8192.0;
