@@ -136,6 +136,13 @@ impl Trs {
         matrix.set_translation(&-matrix.get_translation());
         matrix
     }
+
+    pub fn to_view(&self) -> Trs {
+        let mut trs = self.clone();
+        // Invert translation
+        trs.translation = -trs.get_translation();
+        trs
+    }
 }
 
 impl From<Mat4> for Trs {
