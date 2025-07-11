@@ -91,6 +91,18 @@ impl Mat3 {
         }
         ret
     }
+
+    pub fn new_rotation(right: Vec3, up: Vec3, forward: Vec3) -> Self {
+        // A rotation matrix actually always defines an orthonormal basis,
+        // where each column defines one of the original axes in its rotated state.
+        Self {
+            values: [
+                [right.get_x(), up.get_x(), forward.get_x()],
+                [right.get_y(), up.get_y(), forward.get_y()],
+                [right.get_z(), up.get_z(), forward.get_z()],
+            ],
+        }
+    }
 }
 
 impl From<&Mat4> for Mat3 {
