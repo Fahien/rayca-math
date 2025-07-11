@@ -115,6 +115,10 @@ impl Trs {
         self.rotation * self.translation
     }
 
+    pub fn translate(&mut self, translation: Vec3) {
+        self.translation += translation;
+    }
+
     /// Rotates by the given quaternion
     pub fn rotate(&mut self, rotation: Quat) {
         self.rotation = rotation * self.rotation;
