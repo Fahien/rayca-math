@@ -9,7 +9,7 @@ use std::{
 
 use super::*;
 
-#[repr(C, align(16))]
+#[repr(C)]
 #[derive(Clone, Debug, Default, PartialEq)]
 /// Row-major 4x4 Matrix
 pub struct Mat4 {

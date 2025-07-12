@@ -376,6 +376,12 @@ impl MulAssign<f32> for Vec3 {
     }
 }
 
+impl MulAssign<Vec3> for Vec3 {
+    fn mul_assign(&mut self, rhs: Vec3) {
+        self.simd *= rhs.simd;
+    }
+}
+
 impl MulAdd for Vec3 {
     type Output = Self;
 

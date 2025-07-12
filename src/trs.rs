@@ -124,6 +124,10 @@ impl Trs {
         self.rotation = rotation * self.rotation;
     }
 
+    pub fn scale(&mut self, scale: Vec3) {
+        self.scale *= scale;
+    }
+
     /// Returns a Mat4 representation
     pub fn to_mat4(&self) -> Mat4 {
         Mat4::from(self)
@@ -294,6 +298,11 @@ impl Inversed<Trs> {
     pub fn get_scale(&self) -> Vec3 {
         self.source.scale.get_reciprocal()
     }
+
+    /// Returns a Mat4 representation
+    pub fn to_mat4(&self) -> Mat4 {
+        Mat4::from(self)
+    }
 }
 
 impl Inversed<&Trs> {
@@ -307,6 +316,11 @@ impl Inversed<&Trs> {
 
     pub fn get_scale(&self) -> Vec3 {
         self.source.scale.get_reciprocal()
+    }
+
+    /// Returns a Mat4 representation
+    pub fn to_mat4(&self) -> Mat4 {
+        Mat4::from(self)
     }
 }
 
