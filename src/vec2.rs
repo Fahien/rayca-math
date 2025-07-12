@@ -4,7 +4,7 @@
 
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
-use crate::EPS;
+use crate::{EPS, Vec3};
 
 #[repr(C, align(8))]
 #[derive(Clone, Copy, Default, Debug, PartialEq, PartialOrd)]
@@ -14,6 +14,8 @@ pub struct Vec2 {
 }
 
 impl Vec2 {
+    pub const ZERO: Self = Self { x: 0.0, y: 0.0 };
+
     pub fn new(x: f32, y: f32) -> Vec2 {
         Vec2 { x, y }
     }
@@ -29,6 +31,10 @@ impl Vec2 {
     /// Returns true if all components are within `eps` of the other Vec2
     pub fn close(&self, other: &Self) -> bool {
         (self.x - other.x).abs() < EPS && (self.y - other.y).abs() < EPS
+    }
+
+    pub fn extend(self, z: f32) -> Vec3 {
+        Vec3::new(self.x, self.y, z)
     }
 }
 
