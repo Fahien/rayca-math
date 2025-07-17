@@ -62,7 +62,7 @@ impl Point3 {
         self.simd = self.simd.mul_add(scale.simd, B);
     }
 
-    pub fn rotate(&mut self, rotation: &Quat) {
+    pub fn rotate(&mut self, rotation: Quat) {
         // Extract the vector part of the quaternion
         let u = rotation.get_xyz();
         let v = Vec3::from(*self);

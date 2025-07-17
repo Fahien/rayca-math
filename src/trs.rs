@@ -243,7 +243,7 @@ impl Mul<Vec3> for &Trs {
 
     fn mul(self, mut rhs: Vec3) -> Self::Output {
         rhs.scale(&self.scale);
-        rhs.rotate(&self.rotation);
+        rhs.rotate(self.rotation);
         rhs.translate(&self.translation);
         rhs
     }
@@ -254,7 +254,7 @@ impl Mul<Point3> for &Trs {
 
     fn mul(self, mut rhs: Point3) -> Self::Output {
         rhs.scale(&self.scale);
-        rhs.rotate(&self.rotation);
+        rhs.rotate(self.rotation);
         rhs.translate(&self.translation);
         rhs
     }
@@ -265,7 +265,7 @@ impl Mul<Ray> for &Trs {
 
     fn mul(self, mut rhs: Ray) -> Self::Output {
         rhs.scale(&self.scale);
-        rhs.rotate(&self.rotation);
+        rhs.rotate(self.rotation);
         rhs.translate(&self.translation);
         rhs
     }
@@ -276,7 +276,7 @@ impl Div<Ray> for &Trs {
 
     fn div(self, mut rhs: Ray) -> Self::Output {
         rhs.translate(&self.translation);
-        rhs.rotate(&self.rotation);
+        rhs.rotate(self.rotation);
         rhs.scale(&self.scale);
         rhs
     }
@@ -373,7 +373,7 @@ impl Mul<Vec3> for &Inversed<&Trs> {
 
     fn mul(self, mut rhs: Vec3) -> Self::Output {
         rhs.translate(&self.get_translation());
-        rhs.rotate(&self.get_rotation());
+        rhs.rotate(self.get_rotation());
         rhs.scale(&self.get_scale());
         rhs
     }
@@ -384,7 +384,7 @@ impl Mul<Vec3> for &Inversed<Trs> {
 
     fn mul(self, mut rhs: Vec3) -> Self::Output {
         rhs.translate(&self.get_translation());
-        rhs.rotate(&self.get_rotation());
+        rhs.rotate(self.get_rotation());
         rhs.scale(&self.get_scale());
         rhs
     }
@@ -395,7 +395,7 @@ impl Mul<Ray> for &Inversed<&Trs> {
 
     fn mul(self, mut rhs: Ray) -> Self::Output {
         rhs.translate(&self.get_translation());
-        rhs.rotate(&self.get_rotation());
+        rhs.rotate(self.get_rotation());
         rhs.scale(&self.get_scale());
         rhs
     }
@@ -406,7 +406,7 @@ impl Mul<Ray> for &Inversed<Trs> {
 
     fn mul(self, mut rhs: Ray) -> Self::Output {
         rhs.translate(&self.get_translation());
-        rhs.rotate(&self.get_rotation());
+        rhs.rotate(self.get_rotation());
         rhs.scale(&self.get_scale());
         rhs
     }

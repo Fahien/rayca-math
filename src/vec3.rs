@@ -116,7 +116,7 @@ impl Vec3 {
         self.simd *= scale.simd;
     }
 
-    pub fn rotate(&mut self, rotation: &Quat) {
+    pub fn rotate(&mut self, rotation: Quat) {
         // Extract the vector part of the quaternion
         let u = Vec3::simd(rotation.simd * f32x4::from_array([1.0, 1.0, 1.0, 0.0]));
 
@@ -127,6 +127,12 @@ impl Vec3 {
 
         // Do the math
         *self = 2.0 * u.dot(&v) * u + (s * s - u.dot(&u)) * v + 2.0 * s * u.cross(&v);
+    }
+
+    pub fn get_rotated(&self, rotation: Quat) -> Self {
+        let mut ret = self.clone();
+        ret.rotate(rotation);
+        ret
     }
 
     pub fn translate(&mut self, translation: &Vec3) {
@@ -147,7 +153,9 @@ impl Vec3 {
 
     pub fn normalize(&mut self) {
         let len = self.len();
-        self.simd /= f32x4::from_array([len, len, len, 1.0]);
+        if len > EPS {
+            self.simd /= f32x4::from_array([len, len, len, 1.0]);
+        }
     }
 
     pub fn get_normalized(mut self) -> Self {

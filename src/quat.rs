@@ -233,7 +233,7 @@ impl Mul<Vec3> for Quat {
     type Output = Vec3;
 
     fn mul(self, mut rhs: Vec3) -> Self::Output {
-        rhs.rotate(&self);
+        rhs.rotate(self);
         rhs
     }
 }

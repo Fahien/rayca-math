@@ -32,7 +32,7 @@ impl Ray {
         assert_eq!(self.origin.simd[3], 1.0);
     }
 
-    pub fn rotate(&mut self, rotation: &Quat) {
+    pub fn rotate(&mut self, rotation: Quat) {
         self.dir.rotate(rotation);
         self.rdir = self.dir.get_reciprocal();
         self.origin.rotate(rotation);
