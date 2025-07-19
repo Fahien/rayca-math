@@ -27,6 +27,18 @@ pub struct Vec3 {
     pub simd: f32x4,
 }
 
+impl std::fmt::Display for Vec3 {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "[ {}, {}, {} ]",
+            self.get_x(),
+            self.get_y(),
+            self.get_z()
+        )
+    }
+}
+
 impl Vec3 {
     pub const ZERO: Self = Self {
         simd: f32x4::from_array([0.0, 0.0, 0.0, 0.0]),
