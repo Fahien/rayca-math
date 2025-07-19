@@ -15,6 +15,19 @@ pub struct Quat {
     pub simd: f32x4,
 }
 
+impl std::fmt::Display for Quat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "[ {}, {}, {}, {} ]",
+            self.get_x(),
+            self.get_y(),
+            self.get_z(),
+            self.get_w()
+        )
+    }
+}
+
 impl Quat {
     pub const IDENTITY: Quat = Quat {
         simd: f32x4::from_array([0.0, 0.0, 0.0, 1.0]),
