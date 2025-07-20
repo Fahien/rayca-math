@@ -7,6 +7,8 @@ use std::{
     simd::{f32x4, num::SimdFloat},
 };
 
+use serde::{Deserialize, Serialize};
+
 use crate::*;
 
 /// Quaternion structure
@@ -108,11 +110,21 @@ impl Quat {
             && (self.get_z() - other.get_z()).abs() < eps
             && (self.get_w() - other.get_w()).abs() < eps
     }
+
+    pub fn to_array(self) -> [f32; 4] {
+        self.simd.to_array()
+    }
 }
 
 impl Default for Quat {
     fn default() -> Self {
         Quat::new(0.0, 0.0, 0.0, 1.0)
+    }
+}
+
+impl From<[f32; 4]> for Quat {
+    fn from(arr: [f32; 4]) -> Self {
+        Quat::new(arr[0], arr[1], arr[2], arr[3])
     }
 }
 
@@ -251,6 +263,25 @@ impl Mul<Vec3> for Quat {
     }
 }
 
+impl Serialize for Quat {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        self.to_array().serialize(serializer)
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Quat {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let arr: [f32; 4] = Deserialize::deserialize(deserializer)?;
+        Ok(Quat::from(arr))
+    }
+}
+
 #[cfg(test)]
 mod test {
     use std::f32::consts::FRAC_PI_4;
@@ -355,5 +386,14 @@ mod test {
         assert!((rotated.get_x() - 0.0).abs() < 1e-5);
         assert!((rotated.get_y() - 1.0).abs() < 1e-5);
         assert!((rotated.get_z() - 0.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn serde() {
+        let quat = Quat::new(1.0, 2.0, 3.0, 4.0);
+        let serialized = serde_json::to_string(&quat).unwrap();
+        assert_eq!(serialized, "[1.0,2.0,3.0,4.0]");
+        let deserialized: Quat = serde_json::from_str(&serialized).unwrap();
+        assert_eq!(quat, deserialized);
     }
 }

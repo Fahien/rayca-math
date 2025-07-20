@@ -7,6 +7,8 @@ use std::{
     simd::f32x4,
 };
 
+use serde::*;
+
 use crate::Ray;
 
 use super::*;
@@ -71,10 +73,15 @@ impl TrsBuilder {
 /// TRanSform, or Translation-Rotation-Scale
 /// Order of transformations: scale-rotate-translate
 #[repr(C, align(16))]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct Trs {
+    #[serde(default)]
     pub translation: Vec3,
+
+    #[serde(default)]
     pub rotation: Quat,
+
+    #[serde(default = "Vec3::unit")]
     pub scale: Vec3,
 }
 

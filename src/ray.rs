@@ -82,7 +82,7 @@ mod test {
     fn rotate() {
         let mut ray = Ray::default();
         let rot = Quat::new(-0.383, 0.0, 0.0, 0.924);
-        ray.rotate(&rot);
+        ray.rotate(rot);
         println!("{:?}", ray.dir);
         assert!(ray.dir.close(&Vec3::new(0.0, -0.707, -0.707)));
     }

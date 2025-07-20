@@ -9,6 +9,7 @@ use std::{
 };
 
 use num_traits::MulAdd;
+use serde::*;
 
 use crate::{Color, EPS, Point3, Quat};
 
@@ -59,6 +60,10 @@ impl Vec3 {
     pub const Z_AXIS: Self = Self {
         simd: f32x4::from_array([0.0, 0.0, 1.0, 0.0]),
     };
+
+    pub fn unit() -> Self {
+        Self::ONE
+    }
 
     pub fn new(x: f32, y: f32, z: f32) -> Vec3 {
         Self {
@@ -201,6 +206,10 @@ impl Vec3 {
     /// Returns the reflection of this vector around a surface normal
     pub fn reflect(&self, normal: &Vec3) -> Self {
         self - 2.0 * self.dot(normal) * normal
+    }
+
+    pub fn to_array(self) -> [f32; 3] {
+        self.simd.to_array()[0..3].try_into().unwrap()
     }
 }
 
@@ -458,6 +467,25 @@ impl Index<Axis3> for Vec3 {
     }
 }
 
+impl Serialize for Vec3 {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        self.to_array().serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for Vec3 {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let arr: [f32; 3] = Deserialize::deserialize(deserializer)?;
+        Ok(Self::from(&arr))
+    }
+}
+
 #[cfg(test)]
 mod test {
     mod vec3 {
@@ -474,28 +502,28 @@ mod test {
         fn rotate() {
             let mut v = Vec3::new(1.0, 0.0, 0.0);
             let y180 = Quat::new(0.0, 1.0, 0.0, 0.0);
-            v.rotate(&y180);
+            v.rotate(y180);
             assert!(v.close(&Vec3::new(-1.0, 0.0, 0.0)));
 
             let mut v = Vec3::new(1.0, 0.0, 0.0);
             let y90 = Quat::new(0.0, 0.707, 0.0, 0.707);
-            v.rotate(&y90);
+            v.rotate(y90);
             assert!(v.close(&Vec3::new(0.0, 0.0, -1.0)));
 
             let mut v = Vec3::new(1.0, 0.0, 0.0);
             let z180 = Quat::new(0.0, 0.0, 1.0, 0.0);
-            v.rotate(&z180);
+            v.rotate(z180);
             assert!(v.close(&Vec3::new(-1.0, 0.0, 0.0)));
 
             let mut v = Vec3::new(1.0, 0.0, 0.0);
             let z90 = Quat::new(0.0, 0.0, 0.707, 0.707);
-            v.rotate(&z90);
+            v.rotate(z90);
             assert!(v.close(&Vec3::new(0.0, 1.0, 0.0)));
 
             let mut v = Vec3::new(0.0, 0.0, 1.0);
             // x: -45 degrees
             let rot = Quat::new(-0.383, 0.0, 0.0, 0.924);
-            v.rotate(&rot);
+            v.rotate(rot);
             assert!(v.close(&Vec3::new(0.0, 0.707, 0.707)));
         }
 
@@ -542,6 +570,15 @@ mod test {
             assert_eq!(a.dot(&b), 0.0);
             let c = a.cross(&b);
             assert!(c.close(&Vec3::new(0.0, 0.0, 1.0)));
+        }
+
+        #[test]
+        fn serde() {
+            let v = Vec3::new(1.0, 2.0, 3.0);
+            let serialized = serde_json::to_string(&v).unwrap();
+            assert_eq!(serialized, "[1.0,2.0,3.0]");
+            let deserialized: Vec3 = serde_json::from_str(&serialized).unwrap();
+            assert_eq!(v, deserialized);
         }
     }
 }
